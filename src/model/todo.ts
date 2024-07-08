@@ -28,7 +28,7 @@ export function getTaskById(id: string): IALLTasks | undefined {
  * @returns {number} The new length of the tasks array after adding the task.
  */
 export function createTask(task: ITask): number {
-  return tasks.push({
+  return tasks.unshift({
     id: `${tasks.length + 1}`,
     ...task,
   });
