@@ -1,4 +1,4 @@
-import { IALLTasks, ITask } from "../interface/todo";
+import { IALLTasks, ITask } from "../interfaces/todo";
 
 const tasks: IALLTasks[] = [
   { id: "1", todo: "learn nvim" },

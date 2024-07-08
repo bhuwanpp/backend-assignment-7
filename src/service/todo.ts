@@ -1,4 +1,4 @@
-import { IALLTasks, ITask } from "../interface/todo";
+import { IALLTasks, ITask } from "../interfaces/todo";
 import * as TaskModel from "../model/todo";
 
 /**
