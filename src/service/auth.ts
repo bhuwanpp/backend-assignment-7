@@ -12,9 +12,10 @@ import * as UserService from "../service/user";
  */
 export async function signup(user: User) {
   const password = await bcrypt.hash(user.password, 10);
-  console.log(password);
-  UserService.createUser({ ...user, password });
+  const data = await UserService.createUser({ ...user, password });
+  return data;
 }
+
 /**
  * Logs in a user by verifying email and password, and generates access and refresh tokens.
  * @param {Pick<User, "email" | "password">} body - Object containing user's email and password.

@@ -10,11 +10,17 @@ import { sign, verify } from "jsonwebtoken";
  */
 export async function signup(req: Request, res: Response) {
   const { body } = req;
-  await authService.signup(body);
-  res.json({
-    message: "user created ",
-    ...body,
-  });
+  const data = await authService.signup(body);
+  if (data) {
+    res.json({
+      message: "user created ",
+      ...body,
+    });
+  } else {
+    res.json({
+      message: "user already exist",
+    });
+  }
 }
 
 /**

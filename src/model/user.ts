@@ -7,21 +7,18 @@ const users: User[] = [
     name: "user1",
     email: "one@gmail.com",
     password: "$2b$10$syb.jhxq20CycD/u6Trqw.ym8rXNalEnDZJwvJoZQKj/Atx0Xm8va",
-    userId: "2",
   },
   {
     id: "2",
     name: "user2",
     email: "two@gmail.com",
     password: "$2b$10$T5lntD8sM3PFVQWIlLj8gOoeiE6K6vxWJW9JRLZSuuM11WplpgmDO",
-    userId: "3",
   },
   {
     id: "3",
     name: "user3",
     email: "three@gmail.com",
     password: "$2b$10$C5C5GHW4CVT6NG76er6boe9OPQupPqHq4PmQu3ZexzPwRNO.qBtDq",
-    userId: "4",
   },
 ];
 /**
@@ -36,9 +33,13 @@ export function getUseerById(id: string): User | undefined {
 /**
  * Creates a new user and adds them to the users array.
  * @param {User} user - The user object to create.
- *  * @returns {number} - The new length of the users array after adding the user.
+ *  * @returns {number | undefined} - The new length of the users array after adding the user.
  */
-export function createUser(user: User): number {
+export function createUser(user: User): number | undefined {
+  const existingUser = users.find((u) => u.email === user.email);
+  if (existingUser) {
+    return;
+  }
   return users.push({
     ...user,
     id: `${users.length + 1}`,

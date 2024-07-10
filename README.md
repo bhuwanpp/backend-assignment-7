@@ -26,17 +26,29 @@ You need to have Docker installed on your machine.
 
 ## Getting Started
 
+1. Using Docker
+
 ### Pulling the Docker Image
 
 To get started with this application, pull the Docker image from Docker Hub using the following command:
 
-`ddocker pull bhuwanluffy/node-assignment-2`
+`docker pull bhuwanluffy/node-assignment-2`
 
 ### Running the Docker Container
 
 Once you have pulled the Docker image, you can run it using the following command:
 
 `docker run -d -p 3000:3000  bhuwanluffy/node-assignment-2`
+
+2. Using Github
+
+### Clone the repository
+
+`git@github.com:bhuwanpp/backend-assignment-2.git`
+
+### Running with Docker Compose
+
+`docker-compose up -d --build`
 
 ### Accessing the API for authentication
 
