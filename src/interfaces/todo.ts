@@ -5,4 +5,5 @@ export interface ITask {
 export interface IALLTasks {
   id: string;
   todo: string;
+  userId: string;
 }

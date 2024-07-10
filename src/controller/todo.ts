@@ -7,7 +7,9 @@ import * as taskService from "../service/todo";
  * @param {Response} res - The Express Response object.
  */
 export function getTask(req: Request, res: Response) {
-  const data = taskService.getTasks();
+  //@ts-ignore
+  const { userId } = res;
+  const data = taskService.getTasks(userId);
   res.send({ data });
 }
 
@@ -18,7 +20,9 @@ export function getTask(req: Request, res: Response) {
  */
 export function getTaskById(req: Request, res: Response) {
   const { id } = req.params;
-  const data = taskService.getTaskById(id);
+  // @ts-ignore
+  const { userId } = req;
+  const data = taskService.getTaskById(id, userId);
   res.send(data);
 }
 
@@ -29,7 +33,9 @@ export function getTaskById(req: Request, res: Response) {
  */
 export function createTask(req: Request, res: Response) {
   const { body } = req;
-  taskService.createTask(body);
+  // @ts-ignore
+  const { userId } = req;
+  taskService.createTask(body, userId);
   res.json({
     message: "user created ",
     ...body,
@@ -44,7 +50,9 @@ export function createTask(req: Request, res: Response) {
 export function updateTask(req: Request, res: Response) {
   const { id } = req.params;
   const { body } = req;
-  taskService.updateTask(id, body);
+  // @ts-ignore
+  const { userId } = req;
+  taskService.updateTask(id, body, userId);
   res.json({
     message: "task  updated ",
     ...body,
@@ -59,7 +67,9 @@ export function updateTask(req: Request, res: Response) {
 export function deleteTask(req: Request, res: Response) {
   const { id } = req.params;
   const { body } = req;
-  taskService.deleteTask(id);
+  // @ts-ignore
+  const { userId } = req;
+  taskService.deleteTask(id, userId);
   res.json({
     message: "task deleted ",
     ...body,

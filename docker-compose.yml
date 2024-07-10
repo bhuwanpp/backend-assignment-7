@@ -1,0 +1,12 @@
+services:
+  backend:
+    container_name: todo_api_container
+    build: .
+    environment:
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+    ports:
+      - ${PORT}:8000
+    restart: always
+    volumes:
+      - .:/code
