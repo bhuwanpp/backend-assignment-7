@@ -6,7 +6,7 @@ services:
       - PORT=${PORT}
       - JWT_SECRET=${JWT_SECRET}
     ports:
-      - ${PORT}:8000
+      - ${PORT}:3000
     restart: always
     volumes:
       - .:/code

@@ -5,7 +5,7 @@ const config = {
   jwt: {
     secret: process.env.JWT_SECRET,
     acccessTokenExpiraryMS: 30000,
-    refreshTokenExpiraryMS: 3000000,
+    refreshTokenExpiraryMS: 300000,
   },
 };
 export default config;

@@ -30,13 +30,13 @@ You need to have Docker installed on your machine.
 
 To get started with this application, pull the Docker image from Docker Hub using the following command:
 
-`docker pull bhuwanluffy/node-assignment1`
+`ddocker pull bhuwanluffy/node-assignment-2`
 
 ### Running the Docker Container
 
 Once you have pulled the Docker image, you can run it using the following command:
 
-`docker run -d -p 3000:3000 bhuwanluffy/node-assignment1`
+`docker run -d -p 3000:3000  bhuwanluffy/node-assignment-2`
 
 ### Accessing the API for authentication
 
