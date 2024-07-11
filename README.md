@@ -32,19 +32,19 @@ You need to have Docker installed on your machine.
 
 To get started with this application, pull the Docker image from Docker Hub using the following command:
 
-`docker pull bhuwanluffy/node-assignment-2`
+`docker pull bhuwanluffy/node-assignment-3`
 
 ### Running the Docker Container
 
 Once you have pulled the Docker image, you can run it using the following command:
 
-`docker run -d -p 3000:3000  bhuwanluffy/node-assignment-2`
+`docker run -d -p 3000:3000  bhuwanluffy/node-assignment-3`
 
 2. Using Github
 
 ### Clone the repository
 
-`git@github.com:bhuwanpp/backend-assignment-2.git`
+`git@github.com:bhuwanpp/backend-assignment-3.git`
 
 ### Running with Docker Compose
 
@@ -70,6 +70,13 @@ Example API Endpoints:
             "email":"one@gamil.com",
             "password":"1234"
         }
+    PUT /users/id: Update user.
+     {
+            "email":"one@gamil.com",
+            "password":"1234"
+        }
+
+    PUT /users/id: Delete  user.
 
     GET /auth/refresh-token: Refresh token for user.
         put access token in bearer of  auth

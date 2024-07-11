@@ -1,3 +1,4 @@
+import NotFoundError from "../error/NotFoundError";
 import { IALLTasks, ITask } from "../interfaces/todo";
 import * as TaskModel from "../model/todo";
 
@@ -24,8 +25,9 @@ export function getTaskById(
   const data = TaskModel.getTaskById(id, userId);
   if (!data) {
     return {
-      error: `task with id:${id} not found`,
+      error: `User with id: ${id} not found`,
     };
+    // throw new NotFoundError(`Todo with id ${id} Not Found`);
   }
   return data;
 }
@@ -54,8 +56,9 @@ export function updateTask(
   const data = TaskModel.updateTask(id, task, userId);
   if (data === -1) {
     return {
-      error: `task with id:${id} not found `,
+      error: `User with id: ${id} not found`,
     };
+    // throw new NotFoundError(`Todo with id ${id} Not Found`);
   }
 }
 
@@ -72,7 +75,8 @@ export function deleteTask(
   const data = TaskModel.deleteTask(id, userId);
   if (data === -1) {
     return {
-      error: `task with id:${id} not found `,
+      error: `User with id: ${id} not found`,
     };
+    // throw new NotFoundError(`Todo with id ${id} Not Found`);
   }
 }

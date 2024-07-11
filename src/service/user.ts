@@ -1,3 +1,4 @@
+import { hash } from "bcrypt";
 import { GetUserQuery, User } from "../interfaces/user";
 import * as UserModel from "../model/user";
 
@@ -38,8 +39,60 @@ export function getUseerById(id: string): User | { error: string } {
   const data = UserModel.getUseerById(id);
   if (!data) {
     return {
-      error: `user with id:${id} not found `,
+      error: `User with id: ${id} not found`,
     };
   }
   return data;
+}
+/**
+ * Updates an existing user's details.
+ * @param {string} id - The ID of the user to update.
+ * @param {Partial<User>} updatedUser - The updated user object containing new details.
+ */
+export async function updateUser(id: string, updatedUser: Partial<User>) {
+  const existingUser = UserModel.getUseerById(id);
+  if (!existingUser) {
+    return {
+      error: `User doesnot exist`,
+    };
+  }
+
+  if (updatedUser.password) {
+    updatedUser.password = await hash(updatedUser.password, 10);
+  }
+
+  // Update user object with new details
+  const updatedUserData: User = {
+    ...existingUser,
+    ...updatedUser,
+  };
+
+  // Call the model function to update user
+  const updated = UserModel.updateUser(id, updatedUserData);
+
+  if (!updated) {
+    return {
+      error: `User ${id} doesnot match `,
+    };
+  }
+
+  return updated;
+}
+/**
+ * Deletes a user by their ID.
+ * @param {string} id - The ID of the user to delete.
+ * @returns {boolean} - True if user is successfully deleted, false otherwise.
+ */
+export function deleteUser(id: string): User | undefined | { error: string } {
+  const existingUser = UserModel.getUseerById(id);
+  if (!existingUser) {
+    return {
+      error: `User with id: ${id} not found`,
+    };
+  }
+
+  // Call the model function to delete user
+  const deleted = UserModel.deleteUser(id);
+
+  return deleted;
 }

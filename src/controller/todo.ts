@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import * as taskService from "../service/todo";
-
+import HttpStatusCodes from "http-status-codes";
+import loggerWithNameSpace from "../utils/logger";
+const logger = loggerWithNameSpace("UserController");
 /**
  * Retrieves all tasks.
  * @param {Request} req - The Express Request object.
@@ -10,7 +12,8 @@ export function getTask(req: Request, res: Response) {
   //@ts-ignore
   const { userId } = res;
   const data = taskService.getTasks(userId);
-  res.send({ data });
+  logger.info("Called getTasks");
+  res.status(HttpStatusCodes.OK).json({ data });
 }
 
 /**
@@ -23,7 +26,8 @@ export function getTaskById(req: Request, res: Response) {
   // @ts-ignore
   const { userId } = req;
   const data = taskService.getTaskById(id, userId);
-  res.send(data);
+  logger.info("Called getTaskById");
+  res.status(HttpStatusCodes.OK).json({ data });
 }
 
 /**
@@ -36,7 +40,8 @@ export function createTask(req: Request, res: Response) {
   // @ts-ignore
   const { userId } = req;
   taskService.createTask(body, userId);
-  res.json({
+  logger.info("Called createTask");
+  res.status(HttpStatusCodes.OK).json({
     message: "user created ",
     ...body,
   });
@@ -53,7 +58,8 @@ export function updateTask(req: Request, res: Response) {
   // @ts-ignore
   const { userId } = req;
   taskService.updateTask(id, body, userId);
-  res.json({
+  logger.info("Called updateTask");
+  res.status(HttpStatusCodes.OK).json({
     message: "task  updated ",
     ...body,
   });
@@ -70,7 +76,8 @@ export function deleteTask(req: Request, res: Response) {
   // @ts-ignore
   const { userId } = req;
   taskService.deleteTask(id, userId);
-  res.json({
+  logger.info("Called deleteTask");
+  res.status(HttpStatusCodes.OK).json({
     message: "task deleted ",
     ...body,
   });

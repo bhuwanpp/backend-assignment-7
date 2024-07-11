@@ -5,7 +5,6 @@ import bcript from "bcrypt";
 import config from "../config";
 import bcrypt from "bcrypt";
 import * as UserService from "../service/user";
-
 /**
  * Signs up a new user by hashing their password and creating a user record.
  * @param {User} user - The user object containing user information including password.
@@ -40,6 +39,7 @@ export async function login(body: Pick<User, "email" | "password">) {
     id: existingUser.id,
     name: existingUser.name,
     email: existingUser.email,
+    role: existingUser.role,
   };
   const accessToken = await sign(payload, config.jwt.secret!, {
     expiresIn: config.jwt.acccessTokenExpiraryMS,

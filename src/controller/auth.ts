@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 import * as authService from "../service/auth";
 import config from "../config";
 import { sign, verify } from "jsonwebtoken";
+import loggerWithNameSpace from "../utils/logger";
+
+import HttpStatusCodes from "http-status-codes";
+const logger = loggerWithNameSpace("UserController");
 
 /**
  * Controller function to handle user signup.
@@ -10,15 +14,30 @@ import { sign, verify } from "jsonwebtoken";
  */
 export async function signup(req: Request, res: Response) {
   const { body } = req;
+  const { email, password, role } = body;
+  if (role) {
+    res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: "You cannot provide role",
+    });
+    return;
+  }
+
+  if (!email || !password) {
+    res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: "All the required fields are not provided",
+    });
+    return;
+  }
   const data = await authService.signup(body);
   if (data) {
-    res.json({
+    logger.info("Called signup");
+    res.status(HttpStatusCodes.OK).json({
       message: "user created ",
       ...body,
     });
   } else {
-    res.json({
-      message: "user already exist",
+    res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: "User alredy exists",
     });
   }
 }
@@ -31,7 +50,7 @@ export async function signup(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   const { body } = req;
   const data = await authService.login(body);
-  res.json(data);
+  res.status(HttpStatusCodes.OK).json(data);
 }
 
 /**
@@ -43,7 +62,7 @@ export async function refresh(req: Request, res: Response) {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    res.status(404).json({
+    res.status(HttpStatusCodes.NOT_FOUND).json({
       error: "Invalid token",
     });
     return;
@@ -52,7 +71,7 @@ export async function refresh(req: Request, res: Response) {
   const token = authorization.split(" ");
 
   if (token.length !== 2 || token[0] !== "Bearer") {
-    res.status(404).json({
+    res.status(HttpStatusCodes.NOT_FOUND).json({
       error: "Invalid method",
     });
     return;
@@ -60,7 +79,7 @@ export async function refresh(req: Request, res: Response) {
 
   verify(token[1], config.jwt.secret!, (error, data) => {
     if (error) {
-      res.status(404).json({
+      res.status(HttpStatusCodes.NOT_FOUND).json({
         error: error.message,
       });
     }
@@ -73,8 +92,8 @@ export async function refresh(req: Request, res: Response) {
       };
       const accessToken = sign(payload, config.jwt.secret!);
       const refreshToken = token[1];
-
-      res.status(200).json({
+      logger.info("Called login");
+      res.status(HttpStatusCodes.OK).json({
         accessToken,
         refreshToken,
       });

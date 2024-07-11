@@ -1,6 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { Request } from "../interfaces/auth";
 import { verify } from "jsonwebtoken";
 import config from "../config";
+import { UnauthenticatedError } from "../error/UnauthenticateError";
+import { User } from "../interfaces/user";
+import { ROLE } from "../enums/role";
 
 /**
  * Middleware function to authenticate requests using JWT.
@@ -13,16 +17,25 @@ export function auth(req: Request, res: Response, next: NextFunction): void {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    next(new Error("Unauthenticated"));
+    next(new UnauthenticatedError("Token not found"));
     return;
   }
   // Split the token and check format
   const token = authorization.split(" ");
   if (token.length !== 2 || token[0] !== "Bearer") {
-    next(new Error("Unauthenticated"));
+    next(new UnauthenticatedError("Unauthenticated"));
     return;
   }
   // Verify the JWT token
-  verify(token[1], config.jwt.secret!);
+  try {
+    const user = verify(token[1], config.jwt.secret!) as User;
+    if (user.role !== ROLE.ADMIN) {
+      next(new UnauthenticatedError("Unauthorized"));
+    }
+
+    req.user = user;
+  } catch (error) {
+    next(new UnauthenticatedError("Unauthenticated"));
+  }
   next();
 }

@@ -1,3 +1,4 @@
+import { ROLE } from "../enums/role";
 import { GetUserQuery, User } from "../interfaces/user";
 
 // write query in here
@@ -6,19 +7,15 @@ const users: User[] = [
     id: "1",
     name: "user1",
     email: "one@gmail.com",
-    password: "$2b$10$syb.jhxq20CycD/u6Trqw.ym8rXNalEnDZJwvJoZQKj/Atx0Xm8va",
+    password: "$2b$10$/.Fh4GGQrIZsZTBtTctgne6Hz9HkHX9NVPrW5fDU/6YbT8A7kP9PC",
+    role: ROLE.ADMIN,
   },
   {
     id: "2",
     name: "user2",
     email: "two@gmail.com",
-    password: "$2b$10$T5lntD8sM3PFVQWIlLj8gOoeiE6K6vxWJW9JRLZSuuM11WplpgmDO",
-  },
-  {
-    id: "3",
-    name: "user3",
-    email: "three@gmail.com",
-    password: "$2b$10$C5C5GHW4CVT6NG76er6boe9OPQupPqHq4PmQu3ZexzPwRNO.qBtDq",
+    password: "$2b$10$/.Fh4GGQrIZsZTBtTctgne6Hz9HkHX9NVPrW5fDU/6YbT8A7kP9PC",
+    role: ROLE.USER,
   },
 ];
 /**
@@ -43,6 +40,7 @@ export function createUser(user: User): number | undefined {
   return users.push({
     ...user,
     id: `${users.length + 1}`,
+    role: ROLE.USER,
   });
 }
 
@@ -67,4 +65,39 @@ export function getUsers(query: GetUserQuery): User[] {
  */
 export function getUserByEmail(email: string): User | undefined {
   return users.find((user) => user.email === email);
+}
+
+/**
+ * Updates an existing user's details.
+ * @param {string} id - The ID of the user to update.
+ * @param {Partial<User>} updatedUser - The updated user object containing new details.
+ * @returns {User | undefined} - The updated user object if found and updated, undefined otherwise.
+ */
+export function updateUser(
+  id: string,
+  updatedUser: Partial<User>
+): User | undefined {
+  const index = users.findIndex((user) => user.id === id);
+  if (index !== -1) {
+    users[index] = {
+      ...users[index],
+      ...updatedUser,
+    };
+    return users[index];
+  }
+  return undefined;
+}
+
+/**
+ * Deletes a user by their ID.
+ * @param {string} id - The ID of the user to delete.
+ * @returns {User | undefined} - The deleted user object if found and deleted, undefined otherwise.
+ */
+export function deleteUser(id: string): User | undefined {
+  const index = users.findIndex((user) => user.id === id);
+  if (index !== -1) {
+    const deletedUser = users.splice(index, 1)[0];
+    return deletedUser;
+  }
+  return undefined;
 }
