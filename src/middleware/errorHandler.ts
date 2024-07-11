@@ -3,6 +3,9 @@ import { Request } from "../interfaces/auth";
 import HttpsStatusCode from "http-status-codes";
 import { UnauthenticatedError } from "../error/UnauthenticateError";
 import loggerWithNameSpace from "../utils/logger";
+import NotFoundError from "../error/NotFoundError";
+import ConflictError from "../error/ConflictError";
+import { UnauthorizeError } from "../error/UnauthorizedError";
 const logger = loggerWithNameSpace("ErrorHandler");
 export function notFoundError(req: Request, res: Response) {
   return res.status(HttpsStatusCode.NOT_FOUND).json({
@@ -19,6 +22,22 @@ export function genericErrorHandler(
     logger.error(error.stack);
   }
   if (error instanceof UnauthenticatedError) {
+    return res.status(HttpsStatusCode.UNAUTHORIZED).json({
+      message: error.message,
+    });
+  }
+  // put extra features in here
+  if (error instanceof NotFoundError) {
+    return res.status(HttpsStatusCode.NOT_FOUND).json({
+      message: error.message,
+    });
+  }
+  if (error instanceof ConflictError) {
+    return res.status(HttpsStatusCode.CONFLICT).json({
+      message: error.message,
+    });
+  }
+  if (error instanceof UnauthorizeError) {
     return res.status(HttpsStatusCode.UNAUTHORIZED).json({
       message: error.message,
     });

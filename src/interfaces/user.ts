@@ -1,9 +1,11 @@
+import { ROLE } from "../enums/role";
+
 export interface User {
   id: string;
   name: string;
   email: string;
   password: string;
-  role: string
+  role: ROLE;
 }
 
 export interface GetUserQuery {

@@ -1,4 +1,4 @@
-# Backend Assignment-2
+# Backend Assignment-3
 
 # Introduction
 
@@ -56,9 +56,10 @@ You can now access the Todo app API by opening a web browser or using a tool lik
 
 Example API Endpoints:
 
-    GET /users: Retrieve all users.
+    GET /users: Retrieve all users only from super admin.
     GET /users/{id}: Retrieve a specific user by ID.
-    POST /auth/signup: Create a new user.
+    POST /auth/signup: Create a new user only from super admin.
+
         {
             "email":"one@gamil.com",
             "password":"1234",
@@ -70,13 +71,13 @@ Example API Endpoints:
             "email":"one@gamil.com",
             "password":"1234"
         }
-    PUT /users/id: Update user.
+    PUT /users/id: Update user  only from super admin.
      {
             "email":"one@gamil.com",
             "password":"1234"
         }
 
-    PUT /users/id: Delete  user.
+    PUT /users/id: Delete  user  only from super admin.
 
     GET /auth/refresh-token: Refresh token for user.
         put access token in bearer of  auth

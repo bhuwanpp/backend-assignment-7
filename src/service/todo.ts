@@ -1,14 +1,15 @@
+import { ROLE } from "../enums/role";
 import NotFoundError from "../error/NotFoundError";
 import { IALLTasks, ITask } from "../interfaces/todo";
 import * as TaskModel from "../model/todo";
 
 /**
  * Retrieves all tasks for a specific user.
- * @param {string} userId - The ID of the user whose tasks are to be retrieved.
+ * @param {string} id - The ID of the user whose tasks are to be retrieved.
  * @returns {IALLTasks[]} - An array containing all tasks for the specified user.
  */
-export function getTasks(userId: string): IALLTasks[] {
-  const data = TaskModel.getAllTasks(userId);
+export function getTasks(id: string, role: ROLE): IALLTasks[] {
+  const data = TaskModel.getTasks(id, role);
   return data;
 }
 
@@ -24,10 +25,7 @@ export function getTaskById(
 ): IALLTasks | { error: string } {
   const data = TaskModel.getTaskById(id, userId);
   if (!data) {
-    return {
-      error: `User with id: ${id} not found`,
-    };
-    // throw new NotFoundError(`Todo with id ${id} Not Found`);
+    throw new NotFoundError(`User with id: ${id} not found`);
   }
   return data;
 }
@@ -55,10 +53,7 @@ export function updateTask(
 ): void | { error: string } {
   const data = TaskModel.updateTask(id, task, userId);
   if (data === -1) {
-    return {
-      error: `User with id: ${id} not found`,
-    };
-    // throw new NotFoundError(`Todo with id ${id} Not Found`);
+    throw new NotFoundError(`Todo with id ${id} Not Found`);
   }
 }
 
@@ -74,9 +69,6 @@ export function deleteTask(
 ): void | { error: string } {
   const data = TaskModel.deleteTask(id, userId);
   if (data === -1) {
-    return {
-      error: `User with id: ${id} not found`,
-    };
-    // throw new NotFoundError(`Todo with id ${id} Not Found`);
+    throw new NotFoundError(`Todo with id ${id} Not Found`);
   }
 }

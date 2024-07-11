@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as authService from "../service/auth";
 import config from "../config";
 import { sign, verify } from "jsonwebtoken";
@@ -46,11 +46,16 @@ export async function signup(req: Request, res: Response) {
  * Controller function to handle user login.
  * @param {Request} req - Express Request object containing user credentials in req.body.
  * @param {Response} res - Express Response object used to send JSON response.
+ * @param {next} next - Express nextfunction object
  */
-export async function login(req: Request, res: Response) {
-  const { body } = req;
-  const data = await authService.login(body);
-  res.status(HttpStatusCodes.OK).json(data);
+export async function login(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { body } = req;
+    const data = await authService.login(body);
+    res.status(HttpStatusCodes.OK).json(data);
+  } catch (e) {
+    next(e);
+  }
 }
 
 /**

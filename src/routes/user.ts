@@ -1,14 +1,15 @@
 import express from "express";
 import {
   deleteUser,
-  getUseerById,
+  getUserById,
   getUsers,
   updateUser,
 } from "../controller/user";
-import { auth } from "../middleware/auth";
+import { auth, authorize } from "../middleware/auth";
+import { ROLE } from "../enums/role";
 const router = express();
-router.get("/", auth, getUsers);
-router.get("/:id", auth, getUseerById);
-router.put("/:id", auth, updateUser);
-router.delete("/:id", auth, deleteUser);
+router.get("/", auth, authorize(ROLE.ADMIN), getUsers);
+router.get("/:id", auth, getUserById);
+router.put("/:id", auth, authorize(ROLE.ADMIN), updateUser);
+router.delete("/:id", auth, authorize(ROLE.ADMIN), deleteUser);
 export default router;

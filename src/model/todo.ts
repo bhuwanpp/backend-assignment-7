@@ -1,25 +1,26 @@
+import { ROLE } from "../enums/role";
 import { IALLTasks, ITask } from "../interfaces/todo";
 
 const tasks: IALLTasks[] = [
   {
     id: "1",
     todo: "Task 1 of User ",
-    userId: "1",
+    userId: "2",
   },
   {
     id: "2",
     todo: "Task 3 of User",
-    userId: "1",
+    userId: "2",
   },
   {
     id: "2",
     todo: "Task 2 of User ",
-    userId: "2",
+    userId: "3",
   },
   {
     id: "4",
     todo: "Task 4 of User ",
-    userId: "2",
+    userId: "3",
   },
 ];
 
@@ -28,8 +29,11 @@ const tasks: IALLTasks[] = [
  * @param {string} userId - The ID of the user.
  * @returns {IALLTasks[]} An array containing all tasks.
  */
-export function getAllTasks(userId: string): IALLTasks[] {
-  const todoList = tasks.filter((todo) => todo.userId === userId);
+export function getTasks(id: string, role: ROLE | ROLE[]): IALLTasks[] {
+  if (role === ROLE.ADMIN) {
+    return tasks;
+  }
+  const todoList = tasks.filter((todo) => todo.userId === id);
   return todoList;
 }
 

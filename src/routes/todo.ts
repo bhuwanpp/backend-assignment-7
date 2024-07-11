@@ -6,10 +6,11 @@ import {
   getTaskById,
   updateTask,
 } from "../controller/todo";
-import { auth } from "../middleware/auth";
+import { auth, authorize } from "../middleware/auth";
+import { ROLE } from "../enums/role";
 
 const router = express();
-router.get("/", auth, getTask);
+router.get("/", auth, authorize([ROLE.USER, ROLE.ADMIN]), getTask);
 router.get("/:id", auth, getTaskById);
 router.post("/", auth, createTask);
 router.put("/:id", auth, updateTask);

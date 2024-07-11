@@ -5,6 +5,8 @@ import bcript from "bcrypt";
 import config from "../config";
 import bcrypt from "bcrypt";
 import * as UserService from "../service/user";
+import NotFoundError from "../error/NotFoundError";
+
 /**
  * Signs up a new user by hashing their password and creating a user record.
  * @param {User} user - The user object containing user information including password.
@@ -22,18 +24,14 @@ export async function signup(user: User) {
 export async function login(body: Pick<User, "email" | "password">) {
   const existingUser = getUserByEmail(body.email);
   if (!existingUser) {
-    return {
-      error: "Invalid email or password",
-    };
+    throw new NotFoundError("Invalid username or password");
   }
   const isValidPassword = await bcript.compare(
     body.password,
     existingUser.password
   );
   if (!isValidPassword) {
-    return {
-      error: "Invalid email or password",
-    };
+    throw new NotFoundError("Invalid username or password");
   }
   const payload = {
     id: existingUser.id,

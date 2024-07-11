@@ -1,6 +1,8 @@
 import { hash } from "bcrypt";
 import { GetUserQuery, User } from "../interfaces/user";
 import * as UserModel from "../model/user";
+import NotFoundError from "../error/NotFoundError";
+import ConflictError from "../error/ConflictError";
 
 /**
  * Creates a new user.
@@ -35,12 +37,10 @@ export function getUserByEmail(email: string): User | undefined {
  * @param {string} id - The ID of the user to retrieve.
  * @returns {User | { error: string }} - The user object if found, or an error object if user is not found.
  */
-export function getUseerById(id: string): User | { error: string } {
-  const data = UserModel.getUseerById(id);
+export function getUserById(id: string): User | { error: string } {
+  const data = UserModel.getUserById(id);
   if (!data) {
-    return {
-      error: `User with id: ${id} not found`,
-    };
+    throw new NotFoundError(`User with id ${id} does not exist`);
   }
   return data;
 }
@@ -50,11 +50,9 @@ export function getUseerById(id: string): User | { error: string } {
  * @param {Partial<User>} updatedUser - The updated user object containing new details.
  */
 export async function updateUser(id: string, updatedUser: Partial<User>) {
-  const existingUser = UserModel.getUseerById(id);
+  const existingUser = UserModel.getUserById(id);
   if (!existingUser) {
-    return {
-      error: `User doesnot exist`,
-    };
+    throw new NotFoundError(`User with id ${id} does not exist`);
   }
 
   if (updatedUser.password) {
@@ -71,9 +69,7 @@ export async function updateUser(id: string, updatedUser: Partial<User>) {
   const updated = UserModel.updateUser(id, updatedUserData);
 
   if (!updated) {
-    return {
-      error: `User ${id} doesnot match `,
-    };
+    throw new ConflictError(`User ${id} doesnot match `);
   }
 
   return updated;
@@ -84,11 +80,9 @@ export async function updateUser(id: string, updatedUser: Partial<User>) {
  * @returns {boolean} - True if user is successfully deleted, false otherwise.
  */
 export function deleteUser(id: string): User | undefined | { error: string } {
-  const existingUser = UserModel.getUseerById(id);
+  const existingUser = UserModel.getUserById(id);
   if (!existingUser) {
-    return {
-      error: `User with id: ${id} not found`,
-    };
+    throw new NotFoundError(`User with id ${id} does not exist`);
   }
 
   // Call the model function to delete user

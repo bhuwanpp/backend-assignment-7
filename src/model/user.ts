@@ -1,7 +1,6 @@
 import { ROLE } from "../enums/role";
 import { GetUserQuery, User } from "../interfaces/user";
 
-// write query in here
 const users: User[] = [
   {
     id: "1",
@@ -23,7 +22,7 @@ const users: User[] = [
  * @param {string} id - The ID of the user to retrieve.
  * @returns {User | undefined} - The user object if found, undefined otherwise.
  */
-export function getUseerById(id: string): User | undefined {
+export function getUserById(id: string): User | undefined {
   return users.find(({ id: userId }) => userId === id);
 }
 
