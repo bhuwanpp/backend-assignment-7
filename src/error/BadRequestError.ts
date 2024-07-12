@@ -1,5 +1,3 @@
 import { BaseError } from "./BaseError";
 
-class BadRequestError extends BaseError {}
-
-export default BadRequestError;
+export class BadRequestError extends BaseError {}

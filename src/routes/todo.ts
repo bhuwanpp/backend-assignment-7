@@ -8,12 +8,14 @@ import {
 } from "../controller/todo";
 import { auth, authorize } from "../middleware/auth";
 import { ROLE } from "../enums/role";
+import { validateReqBody, validateReqParams } from "../middleware/validator";
+import { getCreateTaskSchema, querySchema } from "../schema/todo";
 
 const router = express();
 router.get("/", auth, authorize([ROLE.USER, ROLE.ADMIN]), getTask);
-router.get("/:id", auth, getTaskById);
-router.post("/", auth, createTask);
-router.put("/:id", auth, updateTask);
-router.delete("/:id", auth, deleteTask);
+router.post("/", validateReqBody(getCreateTaskSchema), auth, createTask);
+router.get("/:id", validateReqParams(querySchema), auth, getTaskById);
+router.put("/:id", validateReqParams(querySchema), validateReqBody(getCreateTaskSchema), auth, updateTask);
+router.delete("/:id", validateReqParams(querySchema), auth, deleteTask);
 
 export default router;

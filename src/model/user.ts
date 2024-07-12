@@ -1,29 +1,15 @@
 import { ROLE } from "../enums/role";
 import { GetUserQuery, User } from "../interfaces/user";
+import { users } from "../mockdata/user";
 
-const users: User[] = [
-  {
-    id: "1",
-    name: "user1",
-    email: "one@gmail.com",
-    password: "$2b$10$/.Fh4GGQrIZsZTBtTctgne6Hz9HkHX9NVPrW5fDU/6YbT8A7kP9PC",
-    role: ROLE.ADMIN,
-  },
-  {
-    id: "2",
-    name: "user2",
-    email: "two@gmail.com",
-    password: "$2b$10$/.Fh4GGQrIZsZTBtTctgne6Hz9HkHX9NVPrW5fDU/6YbT8A7kP9PC",
-    role: ROLE.USER,
-  },
-];
+
 /**
  * Retrieves a user by their ID.
  * @param {string} id - The ID of the user to retrieve.
  * @returns {User | undefined} - The user object if found, undefined otherwise.
  */
 export function getUserById(id: string): User | undefined {
-  return users.find(({ id: userId }) => userId === id);
+  return users.find(({ userId }) => userId === id);
 }
 
 /**
@@ -38,7 +24,7 @@ export function createUser(user: User): number | undefined {
   }
   return users.push({
     ...user,
-    id: `${users.length + 1}`,
+    userId: `${users.length + 1}`,
     role: ROLE.USER,
   });
 }
@@ -76,7 +62,7 @@ export function updateUser(
   id: string,
   updatedUser: Partial<User>
 ): User | undefined {
-  const index = users.findIndex((user) => user.id === id);
+  const index = users.findIndex((user) => user.userId === id);
   if (index !== -1) {
     users[index] = {
       ...users[index],
@@ -93,7 +79,7 @@ export function updateUser(
  * @returns {User | undefined} - The deleted user object if found and deleted, undefined otherwise.
  */
 export function deleteUser(id: string): User | undefined {
-  const index = users.findIndex((user) => user.id === id);
+  const index = users.findIndex((user) => user.userId === id);
   if (index !== -1) {
     const deletedUser = users.splice(index, 1)[0];
     return deletedUser;

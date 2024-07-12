@@ -23,18 +23,19 @@ export async function signup(user: User) {
  */
 export async function login(body: Pick<User, "email" | "password">) {
   const existingUser = getUserByEmail(body.email);
+  console.log(existingUser)
   if (!existingUser) {
-    throw new NotFoundError("Invalid username or password");
+    throw new NotFoundError("User not Exists");
   }
   const isValidPassword = await bcript.compare(
     body.password,
     existingUser.password
   );
   if (!isValidPassword) {
-    throw new NotFoundError("Invalid username or password");
+    throw new NotFoundError("Invalid email or  password");
   }
   const payload = {
-    id: existingUser.id,
+    userId: existingUser.userId,
     name: existingUser.name,
     email: existingUser.email,
     role: existingUser.role,

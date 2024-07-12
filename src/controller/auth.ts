@@ -51,7 +51,9 @@ export async function signup(req: Request, res: Response) {
 export async function login(req: Request, res: Response, next: NextFunction) {
   try {
     const { body } = req;
+    console.log(body)
     const data = await authService.login(body);
+
     res.status(HttpStatusCodes.OK).json(data);
   } catch (e) {
     next(e);

@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { Request } from "../interfaces/auth";
 import * as taskService from "../service/todo";
 import HttpStatusCodes from "http-status-codes";
 import loggerWithNameSpace from "../utils/logger";
@@ -9,9 +10,8 @@ const logger = loggerWithNameSpace("UserController");
  * @param {Response} res - The Express Response object.
  */
 export function getTask(req: Request, res: Response) {
-  // @ts-ignore
-  const { id, role } = req.user;
-  const data = taskService.getTasks(id, role);
+  const { userId, role } = req.user!;
+  const data = taskService.getTasks(userId, role);
   logger.info("Called getTasks");
   res.status(HttpStatusCodes.OK).json({ data });
 }
@@ -25,8 +25,7 @@ export function getTask(req: Request, res: Response) {
 export function getTaskById(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
-    // @ts-ignore
-    const { userId } = req;
+    const { userId } = req.user!;
     const data = taskService.getTaskById(id, userId);
     logger.info("Called getTaskById");
     res.status(HttpStatusCodes.OK).json({ data });
@@ -44,12 +43,11 @@ export function getTaskById(req: Request, res: Response, next: NextFunction) {
 export function createTask(req: Request, res: Response, next: NextFunction) {
   try {
     const { body } = req;
-    // @ts-ignore
-    const { userId } = req;
+    const { userId } = req.user!;
     taskService.createTask(body, userId);
     logger.info("Called createTask");
     res.status(HttpStatusCodes.OK).json({
-      message: "user created ",
+      message: "task created ",
       ...body,
     });
   } catch (e) {
@@ -67,8 +65,7 @@ export function updateTask(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const { body } = req;
-    // @ts-ignore
-    const { userId } = req;
+    const { userId } = req.user!;
     taskService.updateTask(id, body, userId);
     logger.info("Called updateTask");
     res.status(HttpStatusCodes.OK).json({
@@ -90,8 +87,7 @@ export function deleteTask(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const { body } = req;
-    // @ts-ignore
-    const { userId } = req;
+    const { userId } = req.user!;
     taskService.deleteTask(id, userId);
     logger.info("Called deleteTask");
     res.status(HttpStatusCodes.OK).json({

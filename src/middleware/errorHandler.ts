@@ -6,6 +6,7 @@ import loggerWithNameSpace from "../utils/logger";
 import NotFoundError from "../error/NotFoundError";
 import ConflictError from "../error/ConflictError";
 import { UnauthorizeError } from "../error/UnauthorizedError";
+import { BadRequestError } from "../error/BadRequestError";
 const logger = loggerWithNameSpace("ErrorHandler");
 export function notFoundError(req: Request, res: Response) {
   return res.status(HttpsStatusCode.NOT_FOUND).json({
@@ -39,6 +40,11 @@ export function genericErrorHandler(
   }
   if (error instanceof UnauthorizeError) {
     return res.status(HttpsStatusCode.UNAUTHORIZED).json({
+      message: error.message,
+    });
+  }
+  if (error instanceof BadRequestError) {
+    return res.status(HttpsStatusCode.BAD_REQUEST).json({
       message: error.message,
     });
   }
