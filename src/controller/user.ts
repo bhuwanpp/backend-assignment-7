@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import * as UserService from "../service/user";
-import { GetUserQuery, User } from "../interfaces/user";
-import loggerWithNameSpace from "../utils/logger";
 import HttpStatusCodes from "http-status-codes";
+import { GetUserQuery, User } from "../interfaces/user";
+import * as UserService from "../service/user";
+import loggerWithNameSpace from "../utils/logger";
 const logger = loggerWithNameSpace("UserController");
 /**
  * Controller function to get users based on query parameters.

@@ -25,7 +25,7 @@ export function getTaskById(
 ): IALLTasks | { error: string } {
   const data = TaskModel.getTaskById(id, userId);
   if (!data) {
-    throw new NotFoundError(`User with id: ${id} not found`);
+    throw new NotFoundError(`Todo with id: ${id} not found`);
   }
   return data;
 }
@@ -44,16 +44,18 @@ export function createTask(task: ITask, userId: string) {
  * @param {string} id - The ID of the task to update.
  * @param {ITask} task - The updated task object.
  * @param {string} userId - The ID of the user.
- * @returns {void | { error: string }} - Returns nothing if successful, otherwise an error object.
+ * @returns {ITask | { error: string }} - Returns nothing if successful, otherwise an error object.
  */
 export function updateTask(
   id: string,
   task: ITask,
   userId: string
-): void | { error: string } {
+): ITask | { error: string } {
   const data = TaskModel.updateTask(id, task, userId);
-  if (data === -1) {
+  if (!data) {
     throw new NotFoundError(`Todo with id ${id} Not Found`);
+  } else {
+    return data
   }
 }
 

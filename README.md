@@ -13,6 +13,8 @@ Creating the basic CRUD Todo app API using authentication with Node.js and Expre
    - [Running the Docker Container](#running-the-docker-container)
 4. [Accessing the API for Authentication](#accessing-the-api-for-authentication)
 5. [Accessing the API for ToDo Tasks](#accessing-the-api-for-todo-tasks)
+6. [Unit Test](#running-unit-tests)
+7. [Integration Test](#running-integration-tests)
 
 ## Features
 
@@ -52,7 +54,7 @@ Once you have pulled the Docker image, you can run it using the following comman
 
 ### Accessing the API for authentication
 
-You can now access the Todo app API by opening a web browser or using a tool like curl and navigating to http://localhost:3000/.
+You can now access the Todo app API by opening a web browser or using a tool like curl and navigating to <http://localhost:3000/>.
 
 Example API Endpoints:
 
@@ -87,7 +89,7 @@ Example API Endpoints:
 
 ### Accessing the API for todo tasks
 
-You can now access the Todo app API by opening a web browser or using a tool like curl and navigating to http://localhost:3000/.
+You can now access the Todo app API by opening a web browser or using a tool like curl and navigating to <http://localhost:3000/>.
 
 Example API Endpoints:
 
@@ -120,3 +122,15 @@ Example API Endpoints:
         {
             eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
         }
+
+### Running Unit Tests
+
+Unit tests are located in the tests/unit_test/ directory. To run all unit tests:
+
+`npm run test`
+
+### Running Integration tests
+
+Integration tests are located in the tests/integration/ directory. To run all integration tests:
+
+`npm run test:integration`

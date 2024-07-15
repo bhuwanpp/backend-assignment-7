@@ -1,6 +1,6 @@
 import express from "express";
-import taskRouter from "./todo";
 import authRouter from "./auth";
+import taskRouter from "./todo";
 import userRouter from "./user";
 
 const router = express();

@@ -12,13 +12,13 @@ export const tasks: IALLTasks[] = [
     userId: "2",
   },
   {
-    id: "2",
+    id: "3",
     todo: "Task 2 of User ",
-    userId: "3",
+    userId: "1",
   },
   {
     id: "4",
     todo: "Task 4 of User ",
-    userId: "3",
+    userId: "1",
   },
 ];

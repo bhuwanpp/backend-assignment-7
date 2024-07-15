@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import * as authService from "../service/auth";
-import config from "../config";
 import { sign, verify } from "jsonwebtoken";
+import config from "../config";
+import * as authService from "../service/auth";
 import loggerWithNameSpace from "../utils/logger";
 
 import HttpStatusCodes from "http-status-codes";
@@ -51,7 +51,6 @@ export async function signup(req: Request, res: Response) {
 export async function login(req: Request, res: Response, next: NextFunction) {
   try {
     const { body } = req;
-    console.log(body)
     const data = await authService.login(body);
 
     res.status(HttpStatusCodes.OK).json(data);

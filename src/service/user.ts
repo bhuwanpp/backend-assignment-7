@@ -3,6 +3,7 @@ import { GetUserQuery, User } from "../interfaces/user";
 import * as UserModel from "../model/user";
 import NotFoundError from "../error/NotFoundError";
 import ConflictError from "../error/ConflictError";
+import { date } from "joi";
 
 /**
  * Creates a new user.
@@ -39,6 +40,7 @@ export function getUserByEmail(email: string): User | undefined {
  */
 export function getUserById(id: string): User | { error: string } {
   const data = UserModel.getUserById(id);
+  console.log(data)
   if (!data) {
     throw new NotFoundError(`User with id ${id} does not exist`);
   }

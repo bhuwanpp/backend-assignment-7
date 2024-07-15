@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { BadRequestError } from "../error/BadRequestError";
 import { Schema } from "joi";
+import { BadRequestError } from "../error/BadRequestError";
 
 export function validateReqQuery(schema: Schema) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -29,7 +29,6 @@ export function validateReqParams(schema: Schema) {
       next(new BadRequestError(error.message));
     }
     req.params = value;
-    console.log(req.params);
     next();
-  }
+  };
 }

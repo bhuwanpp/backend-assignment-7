@@ -1,11 +1,10 @@
+import { default as bcript, default as bcrypt } from "bcrypt";
 import { sign } from "jsonwebtoken";
-import { User } from "../interfaces/user";
-import { getUserByEmail } from "./user";
-import bcript from "bcrypt";
 import config from "../config";
-import bcrypt from "bcrypt";
-import * as UserService from "../service/user";
 import NotFoundError from "../error/NotFoundError";
+import { User } from "../interfaces/user";
+import * as UserService from "../service/user";
+import { getUserByEmail } from "./user";
 
 /**
  * Signs up a new user by hashing their password and creating a user record.
@@ -23,7 +22,6 @@ export async function signup(user: User) {
  */
 export async function login(body: Pick<User, "email" | "password">) {
   const existingUser = getUserByEmail(body.email);
-  console.log(existingUser)
   if (!existingUser) {
     throw new NotFoundError("User not Exists");
   }

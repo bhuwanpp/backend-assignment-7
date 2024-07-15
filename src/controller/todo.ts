@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
+import HttpStatusCodes from "http-status-codes";
 import { Request } from "../interfaces/auth";
 import * as taskService from "../service/todo";
-import HttpStatusCodes from "http-status-codes";
 import loggerWithNameSpace from "../utils/logger";
 const logger = loggerWithNameSpace("UserController");
 /**
@@ -69,7 +69,7 @@ export function updateTask(req: Request, res: Response, next: NextFunction) {
     taskService.updateTask(id, body, userId);
     logger.info("Called updateTask");
     res.status(HttpStatusCodes.OK).json({
-      message: "task  updated ",
+      message: "task updated",
       ...body,
     });
   } catch (e) {
@@ -91,7 +91,7 @@ export function deleteTask(req: Request, res: Response, next: NextFunction) {
     taskService.deleteTask(id, userId);
     logger.info("Called deleteTask");
     res.status(HttpStatusCodes.OK).json({
-      message: "task deleted ",
+      message: "task deleted",
       ...body,
     });
   } catch (e) {

@@ -2,14 +2,13 @@ import { ROLE } from "../enums/role";
 import { GetUserQuery, User } from "../interfaces/user";
 import { users } from "../mockdata/user";
 
-
 /**
  * Retrieves a user by their ID.
  * @param {string} id - The ID of the user to retrieve.
  * @returns {User | undefined} - The user object if found, undefined otherwise.
  */
 export function getUserById(id: string): User | undefined {
-  return users.find(({ userId }) => userId === id);
+  return users.find((user) => user.userId === id);
 }
 
 /**

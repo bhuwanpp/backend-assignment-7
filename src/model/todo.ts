@@ -44,16 +44,16 @@ export function createTask(task: ITask, userId: string): number {
  * @param {string} id The ID of the task to update.
  * @param {ITask} task The updated task object.
  * @param {string} userId - The ID of the user.
- * @returns {number} The index of the updated task in the tasks array, or -1 if not found.
+ * @returns {ITask} The index of the updated task in the tasks array, or -1 if not found.
  */
-export function updateTask(id: string, task: ITask, userId: string): number {
+export function updateTask(id: string, task: ITask, userId: string): ITask {
   const index = tasks.findIndex(
     (task) => task.id === id && task.userId === userId
   );
   if (index !== -1) {
     tasks[index] = { ...tasks[index], ...task };
   }
-  return index;
+  return tasks[index];
 }
 
 /**
@@ -69,5 +69,6 @@ export function deleteTask(id: string, userId: string): number {
   if (index !== -1) {
     tasks.splice(index, 1);
   }
+  console.log(index)
   return index;
 }

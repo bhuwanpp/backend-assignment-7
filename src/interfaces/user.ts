@@ -7,7 +7,7 @@ export interface User {
   password: string;
   role: ROLE;
 }
-
+export type UserWithoutPassword = Pick<User, 'userId' | 'name' | 'email' | 'role'>;
 export interface GetUserQuery {
   q?: string;
 }
