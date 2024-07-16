@@ -64,14 +64,13 @@ describe("Task service Test Suite", () => {
 
     afterEach(() => {
       sinon.restore();
+      taskModelGetTaskByIdStub.restore()
     });
 
     it("Should throw an error if task is not found", () => {
       const taskId = "1";
       const userId = "2";
-
       taskModelGetTaskByIdStub.withArgs(taskId, userId).returns(undefined);
-
       expect(() => TaskService.getTaskById(taskId, userId)).toThrowError(
         new NotFoundError(`Todo with id: ${taskId} not found`)
       );

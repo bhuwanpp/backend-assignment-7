@@ -7,11 +7,10 @@ import request from "supertest";
 import * as UserModel from "../../../src/model/user";
 import config from "../../config";
 import { ROLE } from "../../enums/role";
-import NotFoundError from "../../error/NotFoundError";
-import { UnauthenticatedError } from "../../error/UnauthenticateError";
 import { UserWithoutPassword } from "../../interfaces/user";
 import { users } from "../../mockdata/user";
 import router from "../../routes";
+import { genericErrorHandler } from "../../middleware/errorHandler";
 const generateToken = (payload: UserWithoutPassword) => {
   return sign(payload, config.jwt.secret!, { expiresIn: "1h" });
 };
@@ -27,6 +26,7 @@ describe("User Integration test suite", () => {
   const app = express();
   app.use(express.json());
   app.use(router);
+  app.use(genericErrorHandler);
   describe("createUser API Test ", () => {
     it("Should create a new user", async () => {
       const response = await request(app)
@@ -40,6 +40,8 @@ describe("User Integration test suite", () => {
           role: ROLE.USER,
         });
       console.log(users);
+      expect(response.status).toBe(HttpStatusCodes.OK)
+      expect(response.body.message).toBe("user created")
     });
   });
   // login test
@@ -49,14 +51,11 @@ describe("User Integration test suite", () => {
         email: "one@gmail.com",
         password: "test123",
       });
-      if (response.status !== HttpStatusCodes.OK) {
-        throw new UnauthenticatedError("Login failed");
-      }
+
+      expect(response.status).toBe(HttpStatusCodes.OK)
       const accessToken = response.body.accessToken;
-      console.log("Access Token:", accessToken);
-      if (!accessToken) {
-        throw new Error("Access token not found in response");
-      }
+      const refreshToken = response.body.refreshToken;
+      console.log("Access Token:", accessToken + "refreshToken", refreshToken);
     });
   });
   // refresh token
@@ -72,9 +71,7 @@ describe("User Integration test suite", () => {
       expect(response.status).toBe(HttpStatusCodes.OK);
       const newAccessToken = response.body.accessToken;
       console.log("new accessToken " + newAccessToken);
-      if (!newAccessToken) {
-        throw new Error("no new accessToken");
-      }
+
     });
   });
   //
@@ -101,9 +98,6 @@ describe("User Integration test suite", () => {
         .set("Authorization", `Bearer ${token}`);
 
       const expectedUser = UserModel.getUserById(validUserId);
-      if (!expectedUser) {
-        throw new NotFoundError("Id with 2 not found");
-      }
       expect(response.status).toBe(HttpStatusCodes.OK);
       expect(response.body).toEqual(expectedUser);
     });

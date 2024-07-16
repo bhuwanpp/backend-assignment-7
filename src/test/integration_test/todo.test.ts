@@ -9,6 +9,7 @@ import { ROLE } from "../../enums/role";
 import { tasks } from "../../mockdata/todo";
 import router from "../../routes";
 import { UserWithoutPassword } from "../../interfaces/user";
+import { genericErrorHandler } from "../../middleware/errorHandler";
 const generateToken = (payload: UserWithoutPassword) => {
   return sign(payload, config.jwt.secret!, { expiresIn: "1h" });
 };
@@ -23,6 +24,7 @@ describe("Todo Integrarion test suite", () => {
   const app = express();
   app.use(express.json());
   app.use(router);
+  app.use(genericErrorHandler);
 
   // get tasks
   describe("getTask API Test", () => {

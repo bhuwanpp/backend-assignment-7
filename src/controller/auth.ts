@@ -32,7 +32,7 @@ export async function signup(req: Request, res: Response) {
   if (data) {
     logger.info("Called signup");
     res.status(HttpStatusCodes.OK).json({
-      message: "user created ",
+      message: "user created",
       ...body,
     });
   } else {

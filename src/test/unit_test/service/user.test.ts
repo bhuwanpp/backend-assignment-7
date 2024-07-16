@@ -95,6 +95,8 @@ describe("User Service Test Suite", () => {
       ]);
     });
   });
+  //unit test for login 
+  //
 
   // unit test for get all users
   describe("getUsers", () => {

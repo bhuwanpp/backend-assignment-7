@@ -1,8 +1,8 @@
-# Backend Assignment-3
+# Backend Assignment-6
 
 # Introduction
 
-Creating the basic CRUD Todo app API using authentication with Node.js and Express!
+Creating the basic CRUD Todo app API using authentication with Node.js and Express.
 
 ## Table of Contents
 
