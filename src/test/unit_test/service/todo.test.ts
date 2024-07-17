@@ -1,17 +1,16 @@
 import expect from "expect";
-import Sinon from "sinon";
+import { default as Sinon, default as sinon } from "sinon";
 import { ROLE } from "../../../enums/role";
+import NotFoundError from "../../../error/NotFoundError";
 import { IALLTasks, ITask } from "../../../interfaces/todo";
 import * as TaskModel from "../../../model/todo";
 import * as TaskService from "../../../service/todo";
-import sinon from "sinon";
-import NotFoundError from "../../../error/NotFoundError";
 
 //  unit test for delete task
 describe("Task service Test Suite", () => {
   //  unit test for getTasks
   describe("getTasks", () => {
-    let taskModelGetTasksStub: sinon.SinonStub
+    let taskModelGetTasksStub: sinon.SinonStub;
 
     beforeEach(() => {
       taskModelGetTasksStub = sinon.stub(TaskModel, "getTasks");
@@ -56,7 +55,7 @@ describe("Task service Test Suite", () => {
 
   //  unit test for gettasks by id
   describe("getTaskById", () => {
-    let taskModelGetTaskByIdStub: sinon.SinonStub
+    let taskModelGetTaskByIdStub: sinon.SinonStub;
 
     beforeEach(() => {
       taskModelGetTaskByIdStub = sinon.stub(TaskModel, "getTaskById");
@@ -64,7 +63,7 @@ describe("Task service Test Suite", () => {
 
     afterEach(() => {
       sinon.restore();
-      taskModelGetTaskByIdStub.restore()
+      taskModelGetTaskByIdStub.restore();
     });
 
     it("Should throw an error if task is not found", () => {
@@ -93,7 +92,7 @@ describe("Task service Test Suite", () => {
 
   //  unit test for create task
   describe("createTask", () => {
-    let taskModelCreateTaskStub: sinon.SinonStub
+    let taskModelCreateTaskStub: sinon.SinonStub;
     beforeEach(() => {
       taskModelCreateTaskStub = sinon.stub(TaskModel, "createTask");
     });
@@ -140,29 +139,29 @@ describe("Task service Test Suite", () => {
       );
     });
 
-    it('should update an existing task', async () => {
-      const taskId = '5';
-      const userId = '5';
+    it("should update an existing task", async () => {
+      const taskId = "5";
+      const userId = "5";
       const updateTaskData: IALLTasks = {
         id: taskId,
-        todo: 'Updated task',
-        userId: userId
+        todo: "Updated task",
+        userId: userId,
       };
-      const existingTask = { id: taskId, todo: 'Old task', userId };
+      const existingTask = { id: taskId, todo: "Old task", userId };
 
       taskModelGetTasksByIdStub.returns(existingTask);
       taskModelUpdateTaskStub.returns(updateTaskData);
 
       const result = TaskService.updateTask(taskId, updateTaskData, userId);
-      console.log(result)
+      console.log(result);
 
-      expect(result).toEqual(updateTaskData)
+      expect(result).toEqual(updateTaskData);
     });
   });
 
   // unit test for deleteTask
   describe("deleteTask", () => {
-    let taskModelDeleteTaskStub: sinon.SinonStub
+    let taskModelDeleteTaskStub: sinon.SinonStub;
 
     beforeEach(() => {
       taskModelDeleteTaskStub = sinon.stub(TaskModel, "deleteTask");

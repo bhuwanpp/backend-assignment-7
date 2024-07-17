@@ -25,7 +25,6 @@ router.get(
   authorize(ROLE.ADMIN),
   getUserById
 );
-// router.get("/:id", getUserById);
 router.put(
   "/:id",
   auth,

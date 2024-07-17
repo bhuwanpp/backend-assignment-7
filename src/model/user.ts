@@ -1,87 +1,75 @@
-import { ROLE } from "../enums/role";
-import { GetUserQuery, User } from "../interfaces/user";
-import { users } from "../mockdata/user";
+import { GetUserQueryPage, User } from "../interfaces/user";
+import { BaseModel } from "./base";
 
-/**
- * Retrieves a user by their ID.
- * @param {string} id - The ID of the user to retrieve.
- * @returns {User | undefined} - The user object if found, undefined otherwise.
- */
-export function getUserById(id: string): User | undefined {
-  return users.find((user) => user.userId === id);
-}
-
-/**
- * Creates a new user and adds them to the users array.
- * @param {User} user - The user object to create.
- *  * @returns {number | undefined} - The new length of the users array after adding the user.
- */
-export function createUser(user: User): number | undefined {
-  const existingUser = users.find((u) => u.email === user.email);
-  if (existingUser) {
-    return;
-  }
-  return users.push({
-    ...user,
-    userId: `${users.length + 1}`,
-    role: ROLE.USER,
-  });
-}
-
-/**
- * Retrieves users from the users array based on the provided query.
- * If no query is provided, returns all users.
- * @param {GetUserQuery} query - The query object containing search parameters.
- * @returns {User[]} - Array of users that match the query or all users if no query is provided.
- */
-export function getUsers(query: GetUserQuery): User[] {
-  const { q } = query;
-  if (q) {
-    return users.filter(({ name }) => name.includes(q));
-  }
-  return users;
-}
-
-/**
- * Retrieves a user by their email address.
- * @param {string} email - The email address of the user to retrieve.
- * @returns {User | undefined} - The user object if found, undefined otherwise.
- */
-export function getUserByEmail(email: string): User | undefined {
-  return users.find((user) => user.email === email);
-}
-
-/**
- * Updates an existing user's details.
- * @param {string} id - The ID of the user to update.
- * @param {Partial<User>} updatedUser - The updated user object containing new details.
- * @returns {User | undefined} - The updated user object if found and updated, undefined otherwise.
- */
-export function updateUser(
-  id: string,
-  updatedUser: Partial<User>
-): User | undefined {
-  const index = users.findIndex((user) => user.userId === id);
-  if (index !== -1) {
-    users[index] = {
-      ...users[index],
-      ...updatedUser,
+export class UserModel extends BaseModel {
+  static async createUser(user: User) {
+    const userToCreate = {
+      name: user.name,
+      email: user.email,
+      password: user.password,
     };
-    return users[index];
+    const query = await this.queryBuilder().insert(userToCreate).table("users");
+    return query;
   }
-  return undefined;
-}
+  static async updateUser(id: string, user: User) {
+    const userToUpdate = {
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      role: user.role,
+      updatedAt: new Date(),
+    };
+    const query = this.queryBuilder()
+      .update(userToUpdate)
+      .table("users")
+      .where({ id });
+    await query;
+  }
+  static getUsers(filter: GetUserQueryPage) {
+    const { q } = filter;
+    const query = this.queryBuilder()
+      .select("id", "name", "email")
+      .table("users")
+      .limit(filter.size)
+      .offset((filter.page - 1) * filter.size);
+    if (q) {
+      query.whereLike("name", `%${q}%`);
+    }
+    return query;
+  }
+  static count(filter: GetUserQueryPage) {
+    const { q } = filter;
+    const query = this.queryBuilder().count("*").table("users").first();
+    if (q) {
+      query.whereLike("name", `%${q}%`);
+    }
+    return query;
+  }
+  static getUserById(id: string) {
+    const query = this.queryBuilder()
+      .select("id")
+      .table("users")
+      .where({ id })
+      .first();
+    return query;
+  }
+  static getUserByEmail(email: string) {
+    const query = this.queryBuilder()
+      .select("userId", "name", "email", "password", "role")
+      .table("users")
+      .where({ email })
+      .first();
+    // const query = this.queryBuilder()
+    //   .select("email")
+    //   .table("users")
+    //   .where({ email })
+    //   .first();
+    console.log(query);
+    return query;
+  }
 
-/**
- * Deletes a user by their ID.
- * @param {string} id - The ID of the user to delete.
- * @returns {User | undefined} - The deleted user object if found and deleted, undefined otherwise.
- */
-export function deleteUser(id: string): User | undefined {
-  const index = users.findIndex((user) => user.userId === id);
-  if (index !== -1) {
-    const deletedUser = users.splice(index, 1)[0];
-    return deletedUser;
+  static deleteUser(id: string) {
+    const query = this.queryBuilder().delete().table("users").where({ id });
+    return query;
   }
-  return undefined;
 }

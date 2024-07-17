@@ -15,19 +15,19 @@ export function seed(knex: Knex): Promise<void> {
       return knex(TABLE_NAME).insert([
         {
           todo: "Task 1 of User ",
-          userId: "1"
+          user_id: "1"
         },
         {
           todo: "Task 3 of User",
-          userId: "1"
+          user_id: "1"
         },
         {
           todo: "Task 2 of User ",
-          userId: "2"
+          user_id: "2"
         },
         {
           todo: "Task 4 of User ",
-          userId: "2"
+          user_id: "2"
         },
       ]);
     });

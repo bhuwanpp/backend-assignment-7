@@ -3,8 +3,8 @@ import { sign } from "jsonwebtoken";
 import config from "../config";
 import NotFoundError from "../error/NotFoundError";
 import { User } from "../interfaces/user";
+import * as UserModel from "../model/user";
 import * as UserService from "../service/user";
-import { getUserByEmail } from "./user";
 
 /**
  * Signs up a new user by hashing their password and creating a user record.
@@ -21,7 +21,8 @@ export async function signup(user: User) {
  * @param {Pick<User, "email" | "password">} body - Object containing user's email and password.
  */
 export async function login(body: Pick<User, "email" | "password">) {
-  const existingUser = getUserByEmail(body.email);
+  const existingUser = await UserModel.UserModel.getUserByEmail(body.email);
+  console.log("service" + existingUser);
   if (!existingUser) {
     throw new NotFoundError("User not Exists");
   }

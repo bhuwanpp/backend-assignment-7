@@ -13,8 +13,8 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable(TABLE_NAME, (table) => {
     table.bigIncrements();
     table.string('todo', 100).notNullable()
-    table.integer('userId').notNullable()
-    table.foreign('userId').references('userId').inTable('users')
+    table.integer('user_id').notNullable()
+    table.foreign('user_id').references('user_id').inTable('users')
 
 
     table.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'));
@@ -23,7 +23,7 @@ export async function up(knex: Knex): Promise<void> {
       .bigInteger('created_by')
       .unsigned()
       .nullable()
-      .references('userId')
+      .references('user_id')
       .inTable('users');
 
     table.timestamp('updated_at').nullable();
@@ -31,7 +31,7 @@ export async function up(knex: Knex): Promise<void> {
     table
       .bigInteger('updated_by')
       .unsigned()
-      .references('userId')
+      .references('user_id')
       .inTable('users')
       .nullable();
   });

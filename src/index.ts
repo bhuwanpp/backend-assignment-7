@@ -1,11 +1,11 @@
-import config from "./config";
-import express from "express";
-import router from "./routes";
-import { requestLogger } from "./middleware/logger";
-import { genericErrorHandler, notFoundError } from "./middleware/errorHandler";
-import helmet from "helmet";
-import rateLimiter from "express-rate-limit";
 import cors from "cors";
+import express from "express";
+import rateLimiter from "express-rate-limit";
+import helmet from "helmet";
+import config from "./config";
+import { genericErrorHandler, notFoundError } from "./middleware/errorHandler";
+import { requestLogger } from "./middleware/logger";
+import router from "./routes";
 
 const app = express();
 const limiter = rateLimiter({

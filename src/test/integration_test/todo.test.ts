@@ -6,10 +6,9 @@ import request from "supertest";
 import * as TaskModel from "../../../src/model/todo";
 import config from "../../config";
 import { ROLE } from "../../enums/role";
-import { tasks } from "../../mockdata/todo";
-import router from "../../routes";
-import { UserWithoutPassword } from "../../interfaces/user";
 import { genericErrorHandler } from "../../middleware/errorHandler";
+import router from "../../routes";
+import { UserWithoutPassword } from "../../types/user";
 const generateToken = (payload: UserWithoutPassword) => {
   return sign(payload, config.jwt.secret!, { expiresIn: "1h" });
 };

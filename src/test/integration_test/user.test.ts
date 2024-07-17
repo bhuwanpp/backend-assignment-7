@@ -7,10 +7,9 @@ import request from "supertest";
 import * as UserModel from "../../../src/model/user";
 import config from "../../config";
 import { ROLE } from "../../enums/role";
-import { UserWithoutPassword } from "../../interfaces/user";
-import { users } from "../../mockdata/user";
-import router from "../../routes";
 import { genericErrorHandler } from "../../middleware/errorHandler";
+import router from "../../routes";
+import { UserWithoutPassword } from "../../types/user";
 const generateToken = (payload: UserWithoutPassword) => {
   return sign(payload, config.jwt.secret!, { expiresIn: "1h" });
 };
@@ -40,8 +39,8 @@ describe("User Integration test suite", () => {
           role: ROLE.USER,
         });
       console.log(users);
-      expect(response.status).toBe(HttpStatusCodes.OK)
-      expect(response.body.message).toBe("user created")
+      expect(response.status).toBe(HttpStatusCodes.OK);
+      expect(response.body.message).toBe("user created");
     });
   });
   // login test
@@ -52,7 +51,7 @@ describe("User Integration test suite", () => {
         password: "test123",
       });
 
-      expect(response.status).toBe(HttpStatusCodes.OK)
+      expect(response.status).toBe(HttpStatusCodes.OK);
       const accessToken = response.body.accessToken;
       const refreshToken = response.body.refreshToken;
       console.log("Access Token:", accessToken + "refreshToken", refreshToken);
@@ -71,7 +70,6 @@ describe("User Integration test suite", () => {
       expect(response.status).toBe(HttpStatusCodes.OK);
       const newAccessToken = response.body.accessToken;
       console.log("new accessToken " + newAccessToken);
-
     });
   });
   //

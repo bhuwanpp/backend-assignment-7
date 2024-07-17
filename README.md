@@ -1,8 +1,8 @@
-# Backend Assignment-6
+# Backend Assignment-7
 
 # Introduction
 
-Creating the basic CRUD Todo app API using authentication with Node.js and Express.
+Creating the basic CRUD Todo app API using authentication with Node.js, Express and Knex.
 
 ## Table of Contents
 
@@ -34,23 +34,23 @@ You need to have Docker installed on your machine.
 
 To get started with this application, pull the Docker image from Docker Hub using the following command:
 
-`docker pull bhuwanluffy/node-assignment-3`
+`docker pull bhuwanluffy/node-assignment-7`
 
 ### Running the Docker Container
 
 Once you have pulled the Docker image, you can run it using the following command:
 
-`docker run -d -p 3000:3000  bhuwanluffy/node-assignment-3`
+`docker run -d -p 3000:3000 bhuwanluffy/node-assignment-7`
 
 2. Using Github
 
 ### Clone the repository
 
-`git@github.com:bhuwanpp/backend-assignment-3.git`
+`git@github.com:bhuwanpp/backend-assignment-7.git`
 
 ### Running with Docker Compose
 
-`docker-compose up -d --build`
+`docker-compose up -d`
 
 ### Accessing the API for authentication
 

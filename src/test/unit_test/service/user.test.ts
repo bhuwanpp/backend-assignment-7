@@ -2,13 +2,12 @@ import bcrypt from "bcrypt";
 import expect from "expect";
 import { default as Sinon, default as sinon } from "sinon";
 import { ROLE } from "../../../enums/role";
+import ConflictError from "../../../error/ConflictError";
 import NotFoundError from "../../../error/NotFoundError";
-import { users } from "../../../mockdata/user";
 import * as UserModel from "../../../model/user";
 import { signup } from "../../../service/auth";
 import * as UserService from "../../../service/user";
 import { getUserById, getUsers } from "../../../service/user";
-import ConflictError from "../../../error/ConflictError";
 describe("User Service Test Suite", () => {
   // get userbyid unit  test
   describe("getUserById", () => {
@@ -95,7 +94,7 @@ describe("User Service Test Suite", () => {
       ]);
     });
   });
-  //unit test for login 
+  //unit test for login
   //
 
   // unit test for get all users
