@@ -9,9 +9,9 @@ const logger = loggerWithNameSpace("UserController");
  * @param {Request} req - The Express Request object.
  * @param {Response} res - The Express Response object.
  */
-export function getTask(req: Request, res: Response) {
+export async function getTask(req: Request, res: Response) {
   const { userId, role } = req.user!;
-  const data = taskService.getTasks(userId, role);
+  const data = await taskService.getTasks(userId, role);
   logger.info("Called getTasks");
   res.status(HttpStatusCodes.OK).json({ data });
 }
@@ -22,11 +22,11 @@ export function getTask(req: Request, res: Response) {
  * @param {Response} res - The Express Response object.
  *  @param {next} next - Express nextfunction object
  */
-export function getTaskById(req: Request, res: Response, next: NextFunction) {
+export async function getTaskById(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const { userId } = req.user!;
-    const data = taskService.getTaskById(id, userId);
+    const data = await taskService.getTaskById(id, userId);
     logger.info("Called getTaskById");
     res.status(HttpStatusCodes.OK).json({ data });
   } catch (e) {
@@ -61,12 +61,12 @@ export function createTask(req: Request, res: Response, next: NextFunction) {
  * @param {Response} res - The Express Response object.
  * @param {next} next - Express nextfunction object
  */
-export function updateTask(req: Request, res: Response, next: NextFunction) {
+export async function updateTask(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const { body } = req;
     const { userId } = req.user!;
-    taskService.updateTask(id, body, userId);
+    await taskService.updateTask(id, body, userId);
     logger.info("Called updateTask");
     res.status(HttpStatusCodes.OK).json({
       message: "task updated",
@@ -83,12 +83,12 @@ export function updateTask(req: Request, res: Response, next: NextFunction) {
  * @param {Response} res - The Express Response object.
  * @param {next} next - Express nextfunction object
  */
-export function deleteTask(req: Request, res: Response, next: NextFunction) {
+export async function deleteTask(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const { body } = req;
     const { userId } = req.user!;
-    taskService.deleteTask(id, userId);
+    await taskService.deleteTask(id, userId);
     logger.info("Called deleteTask");
     res.status(HttpStatusCodes.OK).json({
       message: "task deleted",

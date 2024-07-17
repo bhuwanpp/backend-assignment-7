@@ -3,8 +3,9 @@ import { default as Sinon, default as sinon } from "sinon";
 import { ROLE } from "../../../enums/role";
 import NotFoundError from "../../../error/NotFoundError";
 import { IALLTasks, ITask } from "../../../interfaces/todo";
-import * as TaskModel from "../../../model/todo";
+// import * as TaskModel from "../../../model/todo";
 import * as TaskService from "../../../service/todo";
+import { TasksModel } from "../../../model/todo";
 
 //  unit test for delete task
 describe("Task service Test Suite", () => {
@@ -13,7 +14,7 @@ describe("Task service Test Suite", () => {
     let taskModelGetTasksStub: sinon.SinonStub;
 
     beforeEach(() => {
-      taskModelGetTasksStub = sinon.stub(TaskModel, "getTasks");
+      taskModelGetTasksStub = sinon.stub(TasksModel, "getTasks");
     });
 
     afterEach(() => {
@@ -58,7 +59,7 @@ describe("Task service Test Suite", () => {
     let taskModelGetTaskByIdStub: sinon.SinonStub;
 
     beforeEach(() => {
-      taskModelGetTaskByIdStub = sinon.stub(TaskModel, "getTaskById");
+      taskModelGetTaskByIdStub = sinon.stub(TasksModel, "getTaskById");
     });
 
     afterEach(() => {
@@ -94,7 +95,7 @@ describe("Task service Test Suite", () => {
   describe("createTask", () => {
     let taskModelCreateTaskStub: sinon.SinonStub;
     beforeEach(() => {
-      taskModelCreateTaskStub = sinon.stub(TaskModel, "createTask");
+      taskModelCreateTaskStub = sinon.stub(TasksModel, "createTask");
     });
 
     afterEach(() => {
@@ -119,8 +120,8 @@ describe("Task service Test Suite", () => {
     let taskModelGetTasksByIdStub: sinon.SinonStub;
 
     beforeEach(() => {
-      taskModelGetTasksByIdStub = sinon.stub(TaskModel, "getTaskById");
-      taskModelUpdateTaskStub = sinon.stub(TaskModel, "updateTask");
+      taskModelGetTasksByIdStub = sinon.stub(TasksModel, "getTaskById");
+      taskModelUpdateTaskStub = sinon.stub(TasksModel, "updateTask");
     });
 
     afterEach(() => {
@@ -164,7 +165,7 @@ describe("Task service Test Suite", () => {
     let taskModelDeleteTaskStub: sinon.SinonStub;
 
     beforeEach(() => {
-      taskModelDeleteTaskStub = sinon.stub(TaskModel, "deleteTask");
+      taskModelDeleteTaskStub = sinon.stub(TasksModel, "deleteTask");
     });
 
     afterEach(() => {

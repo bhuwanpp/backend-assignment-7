@@ -1,14 +1,13 @@
 import { ROLE } from "../enums/role";
 import NotFoundError from "../error/NotFoundError";
-import { IALLTasks, ITask } from "../interfaces/todo";
+import { ITask } from "../interfaces/todo";
 import * as TasksModel from "../model/todo";
 /**
  * Retrieves all tasks for a specific user.
- * @param {string} id - The ID of the user whose tasks are to be retrieved.
- * @returns {IALLTasks[]} - An array containing all tasks for the specified user.
+ * @param {string,ROLE } userId, role - The ID of the user whose tasks are to be retrieved.
  */
-export function getTasks(id: string, role: ROLE) {
-  const data = TasksModel.TasksModel.getTasks(id, role);
+export function getTasks(userId: string, role: ROLE) {
+  const data = TasksModel.TasksModel.getTasks(userId, role);
   return data;
 }
 
@@ -16,7 +15,6 @@ export function getTasks(id: string, role: ROLE) {
  * Retrieves a task by its ID for a specific user.
  * @param {string} id - The ID of the task to retrieve.
  * @param {string} userId - The ID of the user.
- * @returns {IALLTasks | { error: string }} - The task object if found, otherwise an error object.
  */
 export function getTaskById(id: string, userId: string) {
   const data = TasksModel.TasksModel.getTaskById(id, userId);
@@ -40,10 +38,9 @@ export function createTask(task: ITask, userId: string) {
  * @param {string} id - The ID of the task to update.
  * @param {ITask} task - The updated task object.
  * @param {string} userId - The ID of the user.
- * @returns {ITask | { error: string }} - Returns nothing if successful, otherwise an error object.
  */
-export function updateTask(id: string, task: ITask, userId: string) {
-  const data = TasksModel.TasksModel.updateTask(id, task, userId);
+export async function updateTask(id: string, task: ITask, userId: string) {
+  const data = await TasksModel.TasksModel.updateTask(id, task, userId);
   if (!data) {
     throw new NotFoundError(`Todo with id ${id} Not Found`);
   } else {
@@ -55,10 +52,9 @@ export function updateTask(id: string, task: ITask, userId: string) {
  * Deletes a task by its ID for a specific user.
  * @param {string} id - The ID of the task to delete.
  * @param {string} userId - The ID of the user.
- * @returns {void | { error: string }} - Returns nothing if successful, otherwise an error object.
  */
-export function deleteTask(id: string, userId: string) {
-  const data = TasksModel.TasksModel.deleteTask(id, userId);
+export async function deleteTask(id: string, userId: string) {
+  const data = await TasksModel.TasksModel.deleteTask(id, userId);
   if (data) {
     throw new NotFoundError(`Todo with id ${id} Not Found`);
   }

@@ -1,5 +1,5 @@
 import { ROLE } from "../enums/role";
-import { IALLTasks, ITask } from "../interfaces/todo";
+import { IALLTasks, IQueryTask, ITask } from "../interfaces/todo";
 import { BaseModel } from "./base";
 
 export class TasksModel extends BaseModel {
@@ -21,13 +21,20 @@ export class TasksModel extends BaseModel {
       .where({ id });
     await query;
   }
-  static getTasks(userId: string, role: ROLE | ROLE[]) {
-    if (role === ROLE.ADMIN) {
-      return this.queryBuilder().select("*").from("todos");
-    } else {
-      return this.queryBuilder().select("*").from("todos").where({ userId });
-    }
+  // static getTasks(userId: string, role: ROLE | ROLE[]) {
+  //   if (role === ROLE.ADMIN) {
+  //     this.queryBuilder().select("*").from("todos")
+  //   } else {
+  //     return this.queryBuilder().select("*").from("todos").where({ userId });
+  //
+  //   }
+  // }
+  static getTasks(userId: string, role: string) {
+    console.log(userId, role)
+    const query = this.queryBuilder().select("*").from("todos").where({ userId });
+    return query;
   }
+
   static getTaskById(id: string, userId: string) {
     const query = this.queryBuilder()
       .select("*")
@@ -44,7 +51,7 @@ export class TasksModel extends BaseModel {
     const query = this.queryBuilder().insert(newTask).into("todos");
     return query;
   }
-  static updateTask(id: string, task: ITask, userId: string) {
+  static async updateTask(id: string, task: ITask, userId: string) {
     const updatedTask = {
       ...task,
       updatedAt: new Date(),
@@ -53,13 +60,13 @@ export class TasksModel extends BaseModel {
       .update(updatedTask)
       .where({ id, userId })
       .into("todos");
-    return result;
+    return await result;
   }
   static async deleteTask(id: string, userId: string) {
     const result = this.queryBuilder()
       .delete()
       .from("todos")
       .where({ id, userId });
-    return result;
+    return await result;
   }
 }

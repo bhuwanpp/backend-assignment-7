@@ -1,3 +1,4 @@
+import { ROLE } from "../enums/role";
 import { GetUserQueryPage, User } from "../interfaces/user";
 import { BaseModel } from "./base";
 
@@ -7,6 +8,7 @@ export class UserModel extends BaseModel {
       name: user.name,
       email: user.email,
       password: user.password,
+      role: ROLE.USER
     };
     const query = await this.queryBuilder().insert(userToCreate).table("users");
     return query;
@@ -28,7 +30,7 @@ export class UserModel extends BaseModel {
   static getUsers(filter: GetUserQueryPage) {
     const { q } = filter;
     const query = this.queryBuilder()
-      .select("id", "name", "email")
+      .select("userId", "name", "email")
       .table("users")
       .limit(filter.size)
       .offset((filter.page - 1) * filter.size);
@@ -45,26 +47,19 @@ export class UserModel extends BaseModel {
     }
     return query;
   }
-  static getUserById(id: string) {
+  static getUserById(userId: string) {
+    console.log('userid' + userId)
     const query = this.queryBuilder()
-      .select("id")
+      .select("*")
       .table("users")
-      .where({ id })
+      .where({ userId })
       .first();
     return query;
   }
   static getUserByEmail(email: string) {
-    const query = this.queryBuilder()
-      .select("userId", "name", "email", "password", "role")
-      .table("users")
-      .where({ email })
-      .first();
-    // const query = this.queryBuilder()
-    //   .select("email")
-    //   .table("users")
-    //   .where({ email })
-    //   .first();
-    console.log(query);
+    const query = this.queryBuilder().select('userId', 'name', 'email', 'password', 'role').table('users').where({ email }).first()
+
+    console.log(query)
     return query;
   }
 
@@ -73,3 +68,4 @@ export class UserModel extends BaseModel {
     return query;
   }
 }
+

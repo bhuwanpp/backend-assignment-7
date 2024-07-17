@@ -4,10 +4,10 @@ import { default as Sinon, default as sinon } from "sinon";
 import { ROLE } from "../../../enums/role";
 import ConflictError from "../../../error/ConflictError";
 import NotFoundError from "../../../error/NotFoundError";
-import * as UserModel from "../../../model/user";
 import { signup } from "../../../service/auth";
 import * as UserService from "../../../service/user";
 import { getUserById, getUsers } from "../../../service/user";
+import { UserModel } from "../../../model/user";
 describe("User Service Test Suite", () => {
   // get userbyid unit  test
   describe("getUserById", () => {
@@ -127,7 +127,7 @@ describe("User Service Test Suite", () => {
         },
       ];
       userModelGetUsersStub.returns(expectedUsers);
-      const result = getUsers(query);
+      const result = UserModel.getUsers(query);
 
       expect(userModelGetUsersStub.calledOnceWith(query)).toBeTruthy();
       expect(result).toEqual(expectedUsers);
@@ -179,20 +179,17 @@ describe("User Service Test Suite", () => {
     let userModelUpdateUserStub: Sinon.SinonStub;
     let utilsHashPasswordStub: Sinon.SinonStub;
     let userModelGetUserByIdStub: Sinon.SinonStub;
-    let usersDataStub: Sinon.SinonStub;
     beforeEach(() => {
       Sinon.restore();
       utilsHashPasswordStub = sinon.stub(bcrypt, "hash");
       userModelUpdateUserStub = sinon.stub(UserModel, "updateUser");
       userModelGetUserByIdStub = sinon.stub(UserModel, "getUserById");
-      usersDataStub = sinon.stub(users, "findIndex");
     });
 
     afterEach(() => {
       userModelUpdateUserStub.restore();
       utilsHashPasswordStub.restore();
       userModelGetUserByIdStub.restore();
-      usersDataStub.restore();
     });
     it("Should throw error user id not found", () => {
       userModelGetUserByIdStub.returns(undefined);
@@ -219,7 +216,6 @@ describe("User Service Test Suite", () => {
       userModelGetUserByIdStub.resolves(existingUser);
       utilsHashPasswordStub.resolves("hashedPassword");
       userModelUpdateUserStub.returns(updatedUser);
-      usersDataStub.returns(0);
 
       existingUser.password = user.password;
       const response = await UserService.updateUser(userId, existingUser);

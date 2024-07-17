@@ -8,14 +8,13 @@ const logger = loggerWithNameSpace("UserController");
  * Controller function to get users based on query parameters.
  * @param {Request<any, any, any, GetUserQuery>} req - Express Request object containing query parameters in req.query.
  * @param {Response} res - Express Response object used to send JSON response.
- * @returns {void} - Returns nothing directly but sends JSON response.
  */
-export function getUsers(
+export async function getUsers(
   req: Request<any, any, any, GetUserQuery>,
   res: Response
-): void {
+) {
   const { body } = req;
-  const data = UserService.getUsers(body);
+  const data = await UserService.getUsers(body);
   logger.info("Called getUsers");
   res.status(HttpStatusCodes.OK).json(data);
 }
@@ -25,16 +24,16 @@ export function getUsers(
  * @param {Request} req - Express Request object containing user ID in req.params.
  * @param {Response} res - Express Response object used to send JSON response.
  * @param {next} next - Express nextfunction object
- * @returns {void} - Returns nothing directly but sends JSON response.
  */
-export function getUserById(
+export async function getUserById(
   req: Request,
   res: Response,
   next: NextFunction
-): void {
+) {
   try {
     const { id } = req.params;
-    const data = UserService.getUserById(id);
+    console.log(' controller userid' + id)
+    const data = await UserService.getUserById(id);
     logger.info("Called getUserById");
     res.status(HttpStatusCodes.OK).json(data);
   } catch (e) {
@@ -53,9 +52,9 @@ export function updateUser(
   next: NextFunction
 ) {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
     const updatedUserData = req.body;
-    const updatedUser = UserService.updateUser(id, updatedUserData);
+    const updatedUser = UserService.updateUser(userId, updatedUserData);
 
     if (updatedUser) {
       res.status(HttpStatusCodes.OK).json(updatedUser);
@@ -63,7 +62,7 @@ export function updateUser(
     } else {
       res
         .status(HttpStatusCodes.NOT_FOUND)
-        .json({ error: `User with id ${id} not found` });
+        .json({ error: `User with id ${userId} not found` });
     }
   } catch (e) {
     next(e);
